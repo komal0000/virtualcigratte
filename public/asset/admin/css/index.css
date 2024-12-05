@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f7fc;
+  background-color: white;
   margin: 0;
   padding: 0;
 }
@@ -49,9 +49,6 @@ body {
   border-radius: 8px;
 }
 
-input[type=number] {
-  -moz-appearance: textfield;
-}
 input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;

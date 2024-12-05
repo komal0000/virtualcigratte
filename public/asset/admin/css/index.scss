@@ -1,6 +1,6 @@
 $primary-color: #007bff; // Bootstrap primary color
 $hover-color: #0056b3; // Darker blue for hover effect
-$background-color: #f4f7fc; // Background color
+$background-color: white; // Background color
 $container-bg-color: #fff; // Container background
 $content-bg-color: #f9f9f9; // Content background
 $box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // Shadow style
@@ -68,8 +68,6 @@ input[type="number"] {
         -webkit-appearance: none;
         margin: 0;
     }
-
-    -moz-appearance: textfield;
 }
 
 .dropify-wrapper {
