@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('cigaratte_collection_id')->constrained();
-            $table->text('token');
+            $table->string('token', 6)->unique();
             $table->timestamps();
         });
     }
