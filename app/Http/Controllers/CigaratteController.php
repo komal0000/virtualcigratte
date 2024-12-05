@@ -2,42 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper;
 use App\Models\Cigaratte;
 use App\Models\CigaratteCollection;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class CigaratteController extends Controller
 {
+
+    function getRandToken($game_id){
+        $randToken=mt_rand(111111,999999);
+        while (DB::table('cigarattes')->where('cigaratte_collection_id',$game_id)->where('token',$randToken)->exists()) {
+            $randToken=mt_rand(111111,999999);
+        }
+        return $randToken;
+    }
     public function index(){
         $cigarattes = DB::table('cigarattes')->get(['id','user_id','token']);
         return view('admin.cigaratte.index',compact('cigarattes'));
     }
     public function add(Request $request){
-        $users = DB::table('users')->get(['id']);
         if($request->getMethod()=="GET"){
+            $users = DB::table('users')->get(['id']);
             return view('admin.cigaratte.add',compact('users'));
         }else{
+
+            $game=Helper::getCurrentGame();
+
             $cigaratte = new Cigaratte();
             $cigaratte->user_id = $request->user_id;
-            $cigaratte->token = $request->token;
+            $cigaratte->cigaratte_collection_id = $game->id;
+            $cigaratte->token = $this->getRandToken($game->id);
             $cigaratte->save();
+
+            Cache::forget('cigarattes');
             return redirect()->back();
         }
     }
-    public function edit(Request $request ,$id){
-        $cigaratte = Cigaratte::where('id',$id)->first();
-        $users = DB::table('users')->get(['id']);
-        if($request->getMethod()=="GET"){
-            return view('admin.cigaratte.edit',compact('cigaratte','users'));
-        }else{
-            $cigaratte->user_id = $request->user_id;
-            $cigaratte->token = $request->token;
-            $cigaratte->save();
-            return redirect()->back();
-        }
-    }
+
 
     public function Cindex(){
         $CigaratteCollections = DB::table('cigaratte_collections')->get(['id','date','win_token']);

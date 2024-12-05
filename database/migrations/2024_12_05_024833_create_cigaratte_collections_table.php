@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cigaratte_collections', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->string('win_token');
+            $table->string('win_token')->nullable();
             $table->timestamps();
         });
     }

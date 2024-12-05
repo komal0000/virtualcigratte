@@ -16,10 +16,6 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-4">
-                <label for="token">Token</label>
-                <input type="text" name="token" id="token" class="form-control" value="{{ Str::random(6) }}" readonly required>
-            </div>
 
             <div class="col-md-4 d-flex align-items-end">
                 <button type="submit" class="btn btn-primary">

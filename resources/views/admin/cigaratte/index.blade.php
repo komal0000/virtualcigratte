@@ -15,7 +15,6 @@ Cigarattes
             <tr>
                 <th>Users</th>
                 <th>Tokens</th>
-                <th>Option</th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +22,6 @@ Cigarattes
             <tr>
                 <td>{{ $item->user_id }}</td>
                 <td>{{ $item->token }}</td>
-                <td><a href="{{route('admin.cigaratte.edit',['id'=>$item->id])}}" class="btn btn-primary btn-sm"> Edit</a></td>
             </tr>
             @endforeach
         </tbody>
