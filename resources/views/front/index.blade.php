@@ -16,11 +16,12 @@
             </div>
             <div class="info">
                 <h2>TOTAL CIGARETTE TODAY</h2>
-                <span  id="cigarette-count" >
-                    FETCHING INFO
+                <span id="cigarette-count">
+                    {{ $count }}
                 </span>
                 <hr style="margin:10px 0px;">
-                <span style="color:#282828;font-weight:500;cursor: pointer;" onclick="updateCigaretteCount()">Refresh Data</span>
+                <span style="color:#282828;font-weight:500;cursor: pointer;" onclick="updateCigaretteCount()">Refresh
+                    Data</span>
             </div>
             <button class="btn" id="buy-btn">Buy Cigarette</button>
         </div>
@@ -35,23 +36,32 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         const cigaretteCount = document.getElementById('cigarette-count');
         const updateCigaretteCount = () => {
-            cigaretteCount.textContent="FETCHING INFO"
-            $.ajax({
-                url: "{{ route('count') }}",
-                method: "GET",
-                success: function(response) {
-                    cigaretteCount.textContent = response;
+            cigaretteCount.textContent = "FETCHING INFO";
 
-                },
-                error: function() {
-                    alert('Error fetching cigarette count.');
-                }
-            });
+            fetch("{{ route('count') }}", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    cigaretteCount.textContent = data;
+                })
+                .catch(error => {
+                    console.error("Error fetching cigarette count:", error);
+                    alert("Error fetching cigarette count.");
+                });
         };
+
         document.addEventListener('DOMContentLoaded', () => {
             const buyBtn = document.getElementById('buy-btn');
             const popup = document.getElementById('popup');
@@ -68,7 +78,6 @@
                     popup.style.display = 'none';
                 }
             });
-            updateCigaretteCount();
         });
     </script>
 

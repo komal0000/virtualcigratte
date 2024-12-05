@@ -12,27 +12,24 @@ use Illuminate\Support\Facades\DB;
 class FrontController extends Controller
 {
     public function index(){
-        return view('front.index');
+        $count=Helper::getCurrentCount();
+        return view('front.index',compact('count'));
     }
 
     public function info(){
         $user_id=Auth::id();
         Cache::remember('cigarattes_'.$user_id,3600,function()use($user_id){
-            return  DB::table('cigarattes')
+            return  implode(",",DB::table('cigarattes')
             ->where('cigaratte_collection_id',Helper::getCurrentGame()->id)
             ->where('user_id',$user_id)
-            ->get(['token']);
+            ->pluck('token')->toArray());
         });
 
     }
 
     public function count(){
         return response(
-            Cache::remember('cigarattes',3600,function(){
-                return  DB::table('cigarattes')
-                ->where('cigaratte_collection_id',Helper::getCurrentGame()->id)
-                ->count();
-            })
+            Helper::getCurrentCount()
         );
     }
 

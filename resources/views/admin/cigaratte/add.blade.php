@@ -10,11 +10,12 @@
         <div class="row">
             <div class="col-md-4">
                 <label for="user">Select User</label>
-                <select name="user_id" id="user_id" class="form-control">
+                <input type="text" name="user_id" id="user_id" class="form-control" list="user">
+                <datalist id="user" >
                     @foreach ($users as $user)
                         <option value="{{ $user->id }}">{{ $user->id }}</option>
                     @endforeach
-                </select>
+                </datalist>
             </div>
 
             <div class="col-md-4 d-flex align-items-end">

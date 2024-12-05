@@ -7,6 +7,15 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class Helper{
+
+    public static function getCurrentCount(){
+        return Cache::remember('cigarattes',3600,function(){
+            return  DB::table('cigarattes')
+            ->where('cigaratte_collection_id',Helper::getCurrentGame()->id)
+            ->count();
+        });
+    }
+
     public static function getCurrentGame(){
         $date=Carbon::today();
         $dateSTR=$date->format('Y_m_d');

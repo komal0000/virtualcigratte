@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     @yield('css')
-    <link rel="stylesheet" href="{{ asset('asset/admin/css/index.css') }}">
+    <link rel="stylesheet" href="{{ asset('asset/admin/css/main/index.css') }}">
 </head>
 
 <body>
