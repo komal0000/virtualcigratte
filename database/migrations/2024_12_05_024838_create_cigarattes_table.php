@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('cigarattes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('cigaratte_collection_id')->constrained();
+            $table->foreignId('user_id')->unique()->constrained();
+            $table->foreignId('cigaratte_collection_id')->nullable()->constrained();
             $table->string('token', 6)->unique();
             $table->timestamps();
         });

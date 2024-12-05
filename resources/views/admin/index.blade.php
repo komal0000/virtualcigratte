@@ -6,13 +6,20 @@
                 <div class="card setting-item">
                     <div class="card-body">
                         <h4>Cigarette</h4>
-                        <p>Make changes of Agent from here</p>
-                        <a href="" class="card-link"><i class="fas fa-link"></i> Go to Agent
-                            Homepage</a>
+                        <p>Make changes </p>
+                        <a href="{{route('admin.cigaratte.index')}}" class="card-link"><i class="fas fa-link"></i> Go to Cigarette</a>
                     </div>
                 </div>
             </div>
-
+            <div class="col-md-4 mb-3">
+                <div class="card setting-item">
+                    <div class="card-body">
+                        <h4>CigaretteCollections </h4>
+                        <p>Make changes </p>
+                        <a href="{{route('admin.cigaratteCollection.index')}}" class="card-link"><i class="fas fa-link"></i> Go to CigaretteCollection</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

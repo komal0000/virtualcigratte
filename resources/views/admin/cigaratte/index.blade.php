@@ -1,27 +1,29 @@
 @extends('admin.layout.app')
 @section('link')
-CigaratteCollections
+Cigarattes
 @endsection
 @section('btn')
-<a href="{{ route('admin.cigaratteCollection.add') }}" class="btn btn-primary btn-sm">
+<a href="{{ route('admin.cigaratte.add') }}" class="btn btn-primary btn-sm">
     Add
 </a>
 @endsection
 
 @section('content')
 <div class="table-responsive">
-    <table id="cigaratteCollectionTable" class="table table-striped table-bordered">
+    <table id="cigaratteTable" class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>winning Tokens</th>
+                <th>Users</th>
+                <th>Tokens</th>
+                <th>Option</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($CigaratteCollections as $item)
+            @foreach ($cigarattes as $item)
             <tr>
-                <td>{{ $item->date }}</td>
-                <td>{{ $item->win_token }}</td>
+                <td>{{ $item->user_id }}</td>
+                <td>{{ $item->token }}</td>
+                <td><a href="{{route('admin.cigaratte.edit',['id'=>$item->id])}}" class="btn btn-primary btn-sm"> Edit</a></td>
             </tr>
             @endforeach
         </tbody>
@@ -33,7 +35,7 @@ CigaratteCollections
 @section('js')
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#cigaratteCollectionTable').DataTable({
+        $('#cigaratteTable').DataTable({
             responsive: true,
             paging: true,
             searching: true,

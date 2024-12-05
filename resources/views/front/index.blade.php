@@ -11,13 +11,12 @@
 <body>
     <div class="container">
         <div class="box">
-            <div class="info">
-                <h2> User ID</h2>
-                <span>12345</span>
+            <div class="info text-start" style="text-align: left !important;">
+                <h2>YOUR ID : {{ Auth::id() }}</h2>
             </div>
             <div class="info">
-                <h2>The total number of cigarette sold today</h2>
-                <span>10</span>
+                <h2>Total Cigarettes Today</h2>
+                <span  id="cigarette-count" ></span>
             </div>
             <button class="btn" id="buy-btn">Buy Cigarette</button>
         </div>
@@ -32,32 +31,43 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const buyBtn = document.getElementById('buy-btn');
+            const popup = document.getElementById('popup');
+            const closeBtn = document.getElementById('close-btn');
+            const cigaretteCount = document.getElementById('cigarette-count');
+            const updateCigaretteCount = () => {
+                $.ajax({
+                    url: "{{ route('count') }}",
+                    method: "GET",
+                    success: function(response) {
+                        if (response.count !== undefined) {
+                            cigaretteCount.textContent = response.count;
+                        }
+                    },
+                    error: function() {
+                        alert('Error fetching cigarette count.');
+                    }
+                });
+            };
+            buyBtn.addEventListener('click', () => {
+                popup.style.display = 'flex';
+                updateCigaretteCount();
+            });
+            closeBtn.addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
+            window.addEventListener('click', (e) => {
+                if (e.target === popup) {
+                    popup.style.display = 'none';
+                }
+            });
+            updateCigaretteCount();
+        });
+    </script>
+
 </body>
 
 </html>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const buyBtn = document.getElementById('buy-btn');
-        const popup = document.getElementById('popup');
-        const closeBtn = document.getElementById('close-btn');
-
-        // Show pop-up
-        buyBtn.addEventListener('click', () => {
-            popup.style.display = 'flex';
-        });
-
-        // Close pop-up
-        closeBtn.addEventListener('click', () => {
-            popup.style.display = 'none';
-        });
-
-        // Close pop-up when clicking outside
-        window.addEventListener('click', (event) => {
-            if (event.target === popup) {
-                popup.style.display = 'none';
-            }
-        });
-    });
-</script>
