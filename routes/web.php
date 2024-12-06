@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CigaratteController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\LoginController;
+use App\Http\Middleware\AdminLogin;
 use App\Http\Middleware\AutoLogin;
 use Illuminate\Support\Facades\Route;
 
@@ -11,7 +13,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('count',[FrontController::class,'count'])->name('count');
 });
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::match(['GET','POST'],'/login',[LoginController::class,'login'])->name('login');
+Route::prefix('admin')->name('admin.')->middleware('adminlogin')->group(function () {
     Route::get('', [AdminController::class, 'index'])->name('index');
     Route::prefix('cigaratte')->name('cigaratte.')->group(function () {
         Route::get('', [CigaratteController::class, 'index'])->name('index');

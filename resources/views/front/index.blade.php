@@ -11,25 +11,33 @@
 <body>
     <div class="container">
         <div class="box">
-            <div class="info text-start" style="text-align: left !important;">
-                <h2>YOUR ID : {{ Auth::id() }}</h2>
+            <div class="info details-container">
+                <h2>YOUR ID: {{ Auth::id() }}</h2>
+                <button class="btn-details" id="details-btn">Details</button>
             </div>
             <div class="info">
                 <h2>TOTAL CIGARETTE TODAY</h2>
-                <span id="cigarette-count">
-                    {{ $count }}
-                </span>
+                <span id="cigarette-count">{{ $count }}</span>
                 <hr style="margin:10px 0px;">
-                <span style="color:#282828;font-weight:500;cursor: pointer;" onclick="updateCigaretteCount()">Refresh
-                    Data</span>
+                <span style="color:#282828;font-weight:500;cursor: pointer;" onclick="updateCigaretteCount()">Refresh Data</span>
             </div>
-            <button class="btn" id="buy-btn">Buy Cigarette</button>
+            <button class="btn" id="buy-btn" style="width: 100% ; margin-top: 10px;">Buy Cigarette</button>
         </div>
     </div>
 
-    <div class="popup" id="popup">
+    <div class="popup" id="details-popup">
         <div class="popup-content">
-            <span class="close-btn" id="close-btn">&times;</span>
+            <span class="close-btn" id="close-details-btn">&times;</span>
+            <h3>User Details</h3>
+            <p>Your User ID: {{ Auth::id() }}</p>
+            <p>Total Cigarettes Today: <span id="details-cigarette-count">{{ $count }}</span></p>
+        </div>
+    </div>
+
+
+    <div class="popup" id="buy-popup">
+        <div class="popup-content">
+            <span class="close-btn" id="close-buy-btn">&times;</span>
             <img src="https://via.placeholder.com/200" alt="Cigarette Image">
             <h3>Buy Cigarette</h3>
             <p>Enjoy your purchase responsibly!</p>
@@ -38,6 +46,8 @@
 
     <script>
         const cigaretteCount = document.getElementById('cigarette-count');
+        const detailsCigaretteCount = document.getElementById('details-cigarette-count');
+
         const updateCigaretteCount = () => {
             cigaretteCount.textContent = "FETCHING INFO";
 
@@ -55,6 +65,7 @@
                 })
                 .then(data => {
                     cigaretteCount.textContent = data;
+                    detailsCigaretteCount.textContent = data;
                 })
                 .catch(error => {
                     console.error("Error fetching cigarette count:", error);
@@ -63,24 +74,42 @@
         };
 
         document.addEventListener('DOMContentLoaded', () => {
+            const detailsBtn = document.getElementById('details-btn');
             const buyBtn = document.getElementById('buy-btn');
-            const popup = document.getElementById('popup');
-            const closeBtn = document.getElementById('close-btn');
-            buyBtn.addEventListener('click', () => {
-                popup.style.display = 'flex';
+
+            const detailsPopup = document.getElementById('details-popup');
+            const buyPopup = document.getElementById('buy-popup');
+
+            const closeDetailsBtn = document.getElementById('close-details-btn');
+            const closeBuyBtn = document.getElementById('close-buy-btn');
+
+            detailsBtn.addEventListener('click', () => {
+                detailsPopup.style.display = 'flex';
                 updateCigaretteCount();
             });
-            closeBtn.addEventListener('click', () => {
-                popup.style.display = 'none';
+
+            buyBtn.addEventListener('click', () => {
+                buyPopup.style.display = 'flex';
             });
+
+            closeDetailsBtn.addEventListener('click', () => {
+                detailsPopup.style.display = 'none';
+            });
+
+            closeBuyBtn.addEventListener('click', () => {
+                buyPopup.style.display = 'none';
+            });
+
             window.addEventListener('click', (e) => {
-                if (e.target === popup) {
-                    popup.style.display = 'none';
+                if (e.target === detailsPopup) {
+                    detailsPopup.style.display = 'none';
+                }
+                if (e.target === buyPopup) {
+                    buyPopup.style.display = 'none';
                 }
             });
         });
     </script>
-
 </body>
 
 </html>
