@@ -20,6 +20,15 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4 mb-3">
+                <div class="card setting-item">
+                    <div class="card-body">
+                        <h4>QrImage </h4>
+                        <p>Make changes </p>
+                        <a href="{{route('admin.qrimage.index')}}" class="card-link"><i class="fas fa-link"></i> Go to QrImage</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

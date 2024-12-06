@@ -11,26 +11,30 @@ use Illuminate\Support\Facades\DB;
 
 class FrontController extends Controller
 {
-    public function index(){
-        $count=Helper::getCurrentCount();
-        return view('front.index',compact('count'));
+    public function index()
+    {
+        $count = Helper::getCurrentCount();
+        return view('front.index', compact('count'));
     }
 
-    public function info(){
-        $user_id=Auth::id();
-        Cache::remember('cigarattes_'.$user_id,3600,function()use($user_id){
-            return  implode(",",DB::table('cigarattes')
-            ->where('cigaratte_collection_id',Helper::getCurrentGame()->id)
-            ->where('user_id',$user_id)
-            ->pluck('token')->toArray());
+    public function info()
+    {
+        $user_id = Auth::id();
+        $data=Cache::remember('cigarattes_' . $user_id, 3600, function () use ($user_id) {
+            $tokens=DB::table('cigarattes')
+            ->where('cigaratte_collection_id', Helper::getCurrentGame()->id)
+            ->where('user_id', $user_id)
+            ->pluck('token')->toArray();
+            return  implode(",", $tokens);
         });
 
+        return response($data);
     }
 
-    public function count(){
+    public function count()
+    {
         return response(
             Helper::getCurrentCount()
         );
     }
-
 }
