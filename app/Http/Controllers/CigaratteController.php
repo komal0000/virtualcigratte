@@ -61,7 +61,7 @@ class CigaratteController extends Controller
             if ($existingCollection) {
                 return redirect()->back()->with('error', 'A token has already been generated today.');
             } else {
-                $random_token = $this->getRandToken(0);
+                $random_token = $this->getRandToken(1);
                 $CigaratteCollection = new CigaratteCollection();
                 $CigaratteCollection->date = Carbon::now();
                 $CigaratteCollection->win_token = $random_token;

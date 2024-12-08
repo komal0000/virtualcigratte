@@ -35,6 +35,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->middleware('adminlog
     });
     Route::prefix('qrimage')->name('qrimage.')->group(function () {
         Route::match(['GET', 'POST'], 'index', [QrController::class, 'index'])->name('index');
-        Route::get('/showimage', [QrController::class, 'showimage'])->name('showimage');
+        Route::delete('delete/{image}', [QrController::class, 'delete'])->name('delete');
     });
 });
