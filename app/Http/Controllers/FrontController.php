@@ -14,7 +14,8 @@ class FrontController extends Controller
     public function index()
     {
         $count = Helper::getCurrentCount();
-        return view('front.index', compact('count'));
+        $imageURL= Helper::getQrImage()->random();
+        return view('front.index', compact('count','imageURL'));
     }
 
     public function info()

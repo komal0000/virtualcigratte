@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CigaratteController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\QrController;
 use App\Http\Controllers\QrControlller;
 use App\Http\Middleware\AdminLogin;
 use App\Http\Middleware\AutoLogin;
@@ -33,8 +34,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->middleware('adminlog
         Route::match(['GET'], 'winner/{win_id}', [CigaratteController::class, 'winner'])->name('winner');
     });
     Route::prefix('qrimage')->name('qrimage.')->group(function () {
-        Route::match(['GET', 'POST'], 'index', [QrControlller::class, 'index'])->name('index');
-        Route::get('/fetch', [QrControlller::class, 'getQrImageUrl'])->name('fetch');
-
+        Route::match(['GET', 'POST'], 'index', [QrController::class, 'index'])->name('index');
+        Route::get('/showimage', [QrController::class, 'showimage'])->name('showimage');
     });
 });

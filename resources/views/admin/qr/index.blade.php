@@ -24,7 +24,6 @@
 @endsection
 @section('js')
 <script>
-    // Initialize Dropify
     $(document).ready(function() {
         $('#qr_image').dropify();
     });

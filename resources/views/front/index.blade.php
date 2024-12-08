@@ -34,7 +34,8 @@
     <!-- Details Popup -->
     <div class="popup" id="details-popup">
         <div class="popup-content">
-            <span class="close-btn" onclick="document.getElementById('details-popup').style.display='none';">&times;</span>
+            <span class="close-btn"
+                onclick="document.getElementById('details-popup').style.display='none';">&times;</span>
             <h3>User Details</h3>
             <p>Your Token: <span id="user_token"></span></p>
         </div>
@@ -44,7 +45,7 @@
     <div class="popup" id="buy-popup">
         <div class="popup-content">
             <span class="close-btn" onclick="document.getElementById('buy-popup').style.display='none';">&times;</span>
-            <img id="qrImage" src="https://via.placeholder.com/200" alt="Cigarette Image">
+            <img src="{{ asset($imageURL) }}" alt="Random Image" style="max-width: 500px; border: 2px solid #ccc;">
             <h3>Buy Cigarette</h3>
             <p>Enjoy your purchase responsibly!</p>
         </div>
@@ -54,15 +55,9 @@
         const cigaretteCount = document.getElementById('cigarette-count');
         const detailsCigaretteCount = document.getElementById('user_token');
         const winningTokenElement = document.getElementById('winning_token');
-        const qrImageElement = document.getElementById('qrImage'); // Added this line to define qrImageElement
-
         const detailsPopup = document.getElementById('details-popup');
         const buyPopup = document.getElementById('buy-popup');
 
-        window.onload = function() {
-            winnerToken();
-            fetchQrImageUrl(); // Call the function to fetch QR image URL when the page loads
-        };
 
         function showbuypopup() {
             buyPopup.style.display = "flex";
@@ -70,73 +65,58 @@
 
         function loadDetail() {
             fetch("{{ route('info') }}", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(response => response.text())
-            .then(data => {
-                detailsCigaretteCount.textContent = data;
-                detailsPopup.style.display = "flex";
-            })
-            .catch(error => {
-                console.error("Error fetching cigarette count:", error);
-            });
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.text())
+                .then(data => {
+                    detailsCigaretteCount.textContent = data;
+                    detailsPopup.style.display = "flex";
+                })
+                .catch(error => {
+                    console.error("Error fetching cigarette count:", error);
+                });
         }
 
         function winnerToken() {
             fetch("{{ route('win_token') }}", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(response => response.text())
-            .then(data => {
-                if (data) {
-                    winningTokenElement.textContent = data;
-                } else {
-                    winningTokenElement.textContent = "No winning token today.";
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching winning token:", error);
-            });
-        }
-
-        function fetchQrImageUrl() {
-            fetch("{{ route('admin.qrimage.fetch') }}")
-            .then(response => response.json())
-            .then(data => {
-                if (data.image_url) {
-                    qrImageElement.src = data.image_url;
-                } else {
-                    qrImageElement.src = "https://via.placeholder.com/200";
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching QR image:", error);
-            });
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.text())
+                .then(data => {
+                    if (data) {
+                        winningTokenElement.textContent = data;
+                    } else {
+                        winningTokenElement.textContent = "No winning token today.";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching winning token:", error);
+                });
         }
 
         function updateCigaretteCount() {
             cigaretteCount.textContent = "FETCHING INFO";
 
             fetch("{{ route('count') }}", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            .then(response => response.text())
-            .then(data => {
-                cigaretteCount.textContent = data;
-            })
-            .catch(error => {
-                console.error("Error fetching cigarette count:", error);
-                alert("Error fetching cigarette count.");
-            });
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.text())
+                .then(data => {
+                    cigaretteCount.textContent = data;
+                })
+                .catch(error => {
+                    console.error("Error fetching cigarette count:", error);
+                    alert("Error fetching cigarette count.");
+                });
         }
     </script>
 </body>
