@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <div class="images">
-    <form action="" method="POST">
+    <form action="{{route('admin.qrimage.index')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-md-6">

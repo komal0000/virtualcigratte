@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('qr_images', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('cigaratte_collections', function (Blueprint $table) {
+            $table->boolean('published_at')->default(false);
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('qr_images');
+        Schema::table('cigaratte_collections', function (Blueprint $table) {
+            $table->dropColumn('published_at');
+        });
     }
 };

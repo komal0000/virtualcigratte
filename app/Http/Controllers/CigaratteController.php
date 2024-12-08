@@ -41,6 +41,7 @@ class CigaratteController extends Controller
             $cigaratte->token = $this->getRandToken($game->id);
             $cigaratte->save();
             Cache::forget('cigarattes');
+            Cache::forget('cigarattes_' .  $cigaratte->user_id);
             return redirect()->back();
         }
     }
@@ -65,6 +66,7 @@ class CigaratteController extends Controller
                 $CigaratteCollection->date = Carbon::now();
                 $CigaratteCollection->win_token = $random_token;
                 $CigaratteCollection->save();
+                 Helper::delCache();
                 return redirect()->back();
             }
         }
@@ -76,14 +78,14 @@ class CigaratteController extends Controller
         } else {
           $winner ->win_token = $request->win_token;
           $winner->save();
+
+          Helper::delCache();
           return redirect()->back();
         }
     }
     public function winner($win_id)
     {
-
         $win_token = DB::table('cigaratte_collections')->where('id', $win_id)->value('win_token');
-
         $winner = DB::table('cigarattes')
             ->join('users', 'cigarattes.user_id', '=', 'users.id')
             ->where('cigarattes.token', $win_token)
@@ -97,6 +99,11 @@ class CigaratteController extends Controller
         }
     }
 
-
+    public function publish($id){
+        $cigaratte_collection = CigaratteCollection::where('id',$id)->first();
+        $cigaratte_collection->published_at = true;
+        $cigaratte_collection->save();
+        return redirect()->back();
+    }
 
 }

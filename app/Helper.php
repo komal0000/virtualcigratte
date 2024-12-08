@@ -15,7 +15,6 @@ class Helper{
             ->count();
         });
     }
-
     public static function getCurrentGame(){
         $date=Carbon::today();
         $dateSTR=$date->format('Y_m_d');
@@ -28,6 +27,10 @@ class Helper{
             }
             return $game;
         });
-
+    }
+    public static function delCache(){
+        $date = Carbon::today();
+        $dateSTR = $date->format('Y_m_d');
+        return Cache::forget('game_'.$dateSTR);
     }
 }

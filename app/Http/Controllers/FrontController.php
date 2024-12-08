@@ -37,4 +37,16 @@ class FrontController extends Controller
             Helper::getCurrentCount()
         );
     }
+    public function win_token() {
+        $winningtoken = Helper::getCurrentGame();
+
+        if ($winningtoken) {
+            if($winningtoken->published_at == true){
+                return response($winningtoken->win_token);
+            }
+        } else {
+            return response('No token found for today');
+        }
+    }
+
 }
