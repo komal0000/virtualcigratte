@@ -37,8 +37,10 @@ class QrController extends Controller
 
         if (File::exists($imagePath)) {
             File::delete($imagePath); // Delete the image from the server
+            Cache::forget('qrs');
             return response()->json(['success' => 'Image deleted successfully.']);
         }
+
         return response()->json(['error' => 'Image not found.'], 404);
     }
 }

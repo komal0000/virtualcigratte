@@ -6,7 +6,7 @@
 /storage/*.key
 /storage/pail
 /vendor
-/pulbic/uploads/qr_images
+/public/uploads/qr_images
 .env
 .env.backup
 .env.production
