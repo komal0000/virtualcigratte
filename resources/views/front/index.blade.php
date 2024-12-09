@@ -22,8 +22,13 @@
                 <span style="color:#282828;font-weight:500;cursor: pointer;" onclick="updateCigaretteCount()">Refresh
                     Data</span>
             </div>
-            <div class="info" onclick="winnertoken();" style="cursor: pointer">
-                <h2>Winning Token</h2>
+            <div class="info">
+                <div class="head" style="display:flex;justify-content: space-between;margin-bottom: 10px">
+                    <h2>Winning Token</h2>
+                    <button class="btn btn-primary" onclick="winnerToken()">
+                        Show
+                    </button>
+                </div>
                 <span id="winning_token"></span>
             </div>
             <button class="btn" id="buy-btn" style="width: 100%; margin-top: 10px;" onclick="showbuypopup()">Buy
@@ -89,11 +94,7 @@
                 })
                 .then(response => response.text())
                 .then(data => {
-                    if (data) {
                         winningTokenElement.textContent = data;
-                    } else {
-                        winningTokenElement.textContent = "No winning token today.";
-                    }
                 })
                 .catch(error => {
                     console.error("Error fetching winning token:", error);

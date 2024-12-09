@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-
 class FrontController extends Controller
 {
     public function index()
     {
         $count = Helper::getCurrentCount();
         $imageURL= Helper::getQrImage()->random();
+
         return view('front.index', compact('count','imageURL'));
     }
 
@@ -39,15 +39,16 @@ class FrontController extends Controller
         );
     }
     public function win_token() {
-        $winningtoken = Helper::getCurrentGame();
-
-        if ($winningtoken) {
-            if($winningtoken->published_at == true){
-                return response($winningtoken->win_token);
-            }
+        $game = Helper::getCurrentGame();
+        $winningtoken = DB::table('cigaratte_collections')
+            ->where('id', $game->id)
+            ->first(['id', 'win_token', 'published_at']);
+        if ($winningtoken && $winningtoken->published_at) {
+            return response($winningtoken->win_token);
         } else {
-            return response('No token found for today');
+            return response('the winning token have not been published yet..');
         }
     }
+
 
 }
