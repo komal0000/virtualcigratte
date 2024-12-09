@@ -26,7 +26,10 @@ class CigaratteController extends Controller
     }
     public function index()
     {
-        $cigarattes = DB::table('cigarattes')->get(['id', 'user_id', 'token']);
+        $cigarattes = DB::table('cigarattes')
+        ->join('cigaratte_collections', 'cigarattes.cigaratte_collection_id', '=', 'cigaratte_collections.id')
+        ->select('cigarattes.user_id', 'cigarattes.token', 'cigaratte_collections.date')
+        ->get();
         return view('admin.cigaratte.index', compact('cigarattes'));
     }
     public function add(Request $request)
