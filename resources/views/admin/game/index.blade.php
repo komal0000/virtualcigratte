@@ -15,12 +15,13 @@
             {{ session('success') }}
         </div>
     @endif
+
     <div class="table-responsive">
-        <table id="cigaratteCollectionTable" class="table table-striped table-bordered">
+        <table id="cigaratteCollectionTable" class="table table-striped table-bordered nowrap">
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th>winning Tokens</th>
+                    <th>Winning Tokens</th>
                     <th>Option</th>
                 </tr>
             </thead>
@@ -30,14 +31,10 @@
                         <td>{{ $item->date }}</td>
                         <td>{{ $item->win_token }}</td>
                         <td>
-                            <a href="{{ route('admin.cigaratteCollection.generatetoken') }}" class="btn btn-danger">Generate
-                                token</a>
-                            <a href="{{ route('admin.cigaratteCollection.publish', ['id' => $item->id]) }}"
-                                class="btn btn-primary">Publish</a>
-                            <a href="{{ route('admin.cigaratteCollection.winner', ['win_id' => $item->id]) }}"
-                                class="btn btn-success">Winner</a>
-                            <a href="{{ route('admin.cigaratteCollection.edit', ['id' => $item->id]) }}"
-                                class="btn btn-primary">Edit</a>
+                            <a href="{{ route('admin.cigaratteCollection.generatetoken') }}" class="btn btn-danger">Generate Token</a>
+                            <a href="{{ route('admin.cigaratteCollection.publish', ['id' => $item->id]) }}" class="btn btn-primary">Publish</a>
+                            <a href="{{ route('admin.cigaratteCollection.winner', ['win_id' => $item->id]) }}" class="btn btn-success">Winner</a>
+                            <a href="{{ route('admin.cigaratteCollection.edit', ['id' => $item->id]) }}" class="btn btn-primary">Edit</a>
                         </td>
                     </tr>
                 @endforeach

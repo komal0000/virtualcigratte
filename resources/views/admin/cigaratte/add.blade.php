@@ -8,7 +8,7 @@
     <form action="{{ route('admin.cigaratte.add') }}" method="POST">
         @csrf
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 mb-2">
                 <label for="user">Select User</label>
                 <input type="text" name="user_id" id="user_id" class="form-control" list="user">
                 <datalist id="user" >

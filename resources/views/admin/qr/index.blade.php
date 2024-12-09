@@ -33,7 +33,7 @@
             <form action="{{ route('admin.qrimage.index') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-2">
                         <div class="mb-2">
                             <label for="qr_image">Qr image to be uploaded</label>
                         </div>

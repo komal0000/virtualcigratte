@@ -8,7 +8,7 @@
         <form action="{{ route('admin.cigaratteCollection.edit',['id'=>$winner->id]) }}" method="POST">
             @csrf
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-3 mb-2">
                     <label for="win_token">Winning Token</label>
                     <input type="text" name="win_token" id="" class="form-control" value="{{$winner->win_token}}">
                 </div>
