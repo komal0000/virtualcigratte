@@ -28,7 +28,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->middleware('adminlog
     });
     Route::prefix('cigaratteCollection')->name('cigaratteCollection.')->group(function () {
         Route::get('', [CigaratteController::class, 'Cindex'])->name('index');
-        Route::match(['GET', 'POST'], '/add', [CigaratteController::class, 'Cadd'])->name('add');
+        Route::match(['GET', 'POST'], '/generatetoken', [CigaratteController::class, 'generatetoken'])->name('generatetoken');
         Route::match(['GET', 'POST'], '/edit/{id}', [CigaratteController::class, 'Cedit'])->name('edit');
         Route::match(['GET','POST'], '/publish/{id}', [CigaratteController::class, 'publish'])->name('publish');
         Route::match(['GET'], 'winner/{win_id}', [CigaratteController::class, 'winner'])->name('winner');

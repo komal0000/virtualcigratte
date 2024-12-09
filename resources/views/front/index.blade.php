@@ -22,7 +22,7 @@
                 <span style="color:#282828;font-weight:500;cursor: pointer;" onclick="updateCigaretteCount()">Refresh
                     Data</span>
             </div>
-            <div class="info">
+            <div class="info" onclick="winnertoken();" style="cursor: pointer">
                 <h2>Winning Token</h2>
                 <span id="winning_token"></span>
             </div>

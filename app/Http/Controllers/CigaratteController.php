@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
+use function Laravel\Prompts\error;
+
 class CigaratteController extends Controller
 {
 
@@ -50,37 +52,32 @@ class CigaratteController extends Controller
         $CigaratteCollections = DB::table('cigaratte_collections')->get(['id', 'date', 'win_token']);
         return view('admin.game.index', compact('CigaratteCollections'));
     }
-    public function Cadd(Request $request)
+    public function generatetoken()
     {
-        if ($request->getMethod() == "GET") {
-            return view('admin.game.add');
+        $game = Helper::getCurrentGame();
+        $token = $this->getRandToken($game->id);
+        if ($game->win_token == null) {
+            DB::table('cigaratte_collections')
+                ->where('id', $game->id)
+                ->update(['win_token' => $token]);
+            Helper::clearCurrentGame($game->date);
+            return redirect()->back()->with('success', 'Token generated successfully.');
         } else {
-            $today = Carbon::today()->toDateString();
-            $existingCollection = CigaratteCollection::whereDate('date', $today)->first();
-
-            if ($existingCollection) {
-                return redirect()->back()->with('error', 'A token has already been generated today.');
-            } else {
-                $random_token = $this->getRandToken(1);
-                $CigaratteCollection = new CigaratteCollection();
-                $CigaratteCollection->date = Carbon::now();
-                $CigaratteCollection->win_token = $random_token;
-                $CigaratteCollection->save();
-                 Helper::delCache();
-                return redirect()->back();
-            }
+            return redirect()->back()->with('error', 'Token already added.');
         }
     }
-    public function Cedit(Request $request,$id){
-        $winner = CigaratteCollection::where('id',$id)->first();
-        if ($request->getMethod() == "GET") {
-            return view('admin.game.edit',compact('winner'));
-        } else {
-          $winner ->win_token = $request->win_token;
-          $winner->save();
 
-          Helper::delCache();
-          return redirect()->back();
+    public function Cedit(Request $request, $id)
+    {
+        $winner = CigaratteCollection::where('id', $id)->first();
+        if ($request->getMethod() == "GET") {
+            return view('admin.game.edit', compact('winner'));
+        } else {
+            $winner->win_token = $request->win_token;
+            $winner->save();
+
+            Helper::delCache();
+            return redirect()->back();
         }
     }
     public function winner($win_id)
@@ -99,11 +96,11 @@ class CigaratteController extends Controller
         }
     }
 
-    public function publish($id){
-        $cigaratte_collection = CigaratteCollection::where('id',$id)->first();
+    public function publish($id)
+    {
+        $cigaratte_collection = CigaratteCollection::where('id', $id)->first();
         $cigaratte_collection->published_at = true;
         $cigaratte_collection->save();
         return redirect()->back();
     }
-
 }

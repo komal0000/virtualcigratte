@@ -14,10 +14,7 @@ class Helper{
             $folderPath = public_path('uploads/qr_images');
 
             if (File::exists($folderPath)) {
-                // Get all files in the folder
                 $files = File::files($folderPath);
-
-                // Filter the files to include only images
                 $imageFiles = collect($files)->filter(function ($file) {
                     return in_array($file->getExtension(), ['jpg', 'jpeg', 'png', 'gif', 'bmp']);
                 });
@@ -51,6 +48,9 @@ class Helper{
             }
             return $game;
         });
+    }
+    public static function clearCurrentGame($date){
+        return Cache::forget('game_'.$date);
     }
     public static function delCache(){
         $date = Carbon::today();
