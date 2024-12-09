@@ -22,7 +22,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->middleware('adminlog
     Route::get('', [AdminController::class, 'index'])->name('index');
     Route::prefix('cigaratte')->name('cigaratte.')->group(function () {
         Route::get('', [CigaratteController::class, 'index'])->name('index');
-        Route::match(['GET', 'POST'], '/add', [CigaratteController::class, 'add'])->name('add');
+        Route::match(['GET', 'POST'], '/userToken', [CigaratteController::class, 'userToken'])->name('userToken');
         Route::match(['GET', 'POST'], '/edit/{id}', [CigaratteController::class, 'edit'])->name('edit');
         Route::match(['GET', 'POST'], '/del/{id}', [CigaratteController::class, 'del'])->name('del');
     });

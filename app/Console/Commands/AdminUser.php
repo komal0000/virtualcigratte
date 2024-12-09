@@ -33,15 +33,7 @@ class AdminUser extends Command
 
         // Prompt the user for admin details
         $email = $this->ask('Enter the admin email');
-        $password = $this->secret('Enter the admin password');
-        $confirmPassword = $this->secret('Confirm the admin password');
-
-        // Check if the passwords match
-        if ($password !== $confirmPassword) {
-            $this->error('Passwords do not match. Please try again.');
-            return Command::FAILURE;
-        }
-
+        $password = $this->ask('Enter the admin password');
         // Check if the email already exists
         if (User::where('email', $email)->exists()) {
             $this->error('A user with this email already exists.');

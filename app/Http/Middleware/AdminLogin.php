@@ -17,7 +17,7 @@ class AdminLogin
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check() || empty(Auth::user()->email)) {
-            return redirect()->route('index');
+            return redirect()->route('login');
         }
 
         return $next($request);

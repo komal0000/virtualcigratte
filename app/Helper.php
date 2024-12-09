@@ -36,21 +36,24 @@ class Helper{
             ->count();
         });
     }
-    public static function getCurrentGame(){
+    public static function getCurrentGame($date=null){
+
         $date=Carbon::today();
         $dateSTR=$date->format('Y_m_d');
         return Cache::rememberForever('game_'.$dateSTR, function ()use($date) {
             $game=DB::table('cigaratte_collections')->where('date',$date)->first();
             if($game==null){
                 $game=new CigaratteCollection();
-                $game->date=$date;
+                $game->date=$date->format('Y-m-d');
                 $game->save();
             }
             return $game;
+
         });
     }
     public static function clearCurrentGame($date){
-        return Cache::forget('game_'.$date);
+        $dateSTR=str_replace("-","_",$date);
+        Cache::forget('game_'.$dateSTR);
     }
     public static function delCache(){
         $date = Carbon::today();

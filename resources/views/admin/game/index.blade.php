@@ -31,10 +31,14 @@
                         <td>{{ $item->date }}</td>
                         <td>{{ $item->win_token }}</td>
                         <td>
+                            @if($item->win_token==null)
                             <a href="{{ route('admin.cigaratteCollection.generatetoken') }}" class="btn btn-danger">Generate Token</a>
-                            <a href="{{ route('admin.cigaratteCollection.publish', ['id' => $item->id]) }}" class="btn btn-primary">Publish</a>
+                            @endif
+                            @if($item->is_published==0)
+                                <a href="{{ route('admin.cigaratteCollection.publish', ['id' => $item->id]) }}" class="btn btn-primary">Publish</a>
+                                <a href="{{ route('admin.cigaratteCollection.edit', ['id' => $item->id]) }}" class="btn btn-primary">Edit</a>
+                            @endif
                             <a href="{{ route('admin.cigaratteCollection.winner', ['win_id' => $item->id]) }}" class="btn btn-success">Winner</a>
-                            <a href="{{ route('admin.cigaratteCollection.edit', ['id' => $item->id]) }}" class="btn btn-primary">Edit</a>
                         </td>
                     </tr>
                 @endforeach

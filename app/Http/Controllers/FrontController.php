@@ -48,8 +48,8 @@ class FrontController extends Controller
         $game = Helper::getCurrentGame();
         $winningtoken = DB::table('cigaratte_collections')
             ->where('id', $game->id)
-            ->first(['id', 'win_token', 'published_at']);
-        if ($winningtoken && $winningtoken->published_at) {
+            ->first(['id', 'win_token', 'is_published']);
+        if ($winningtoken && $winningtoken->is_published) {
             return response($winningtoken->win_token);
         } else {
             return response('the winning token have not been published yet..');

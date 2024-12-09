@@ -3,18 +3,21 @@
     Cigarattes
 @endsection
 @section('btn')
-    <a href="{{ route('admin.cigaratte.add') }}" class="btn btn-primary btn-sm">
-        Add
+    <a href="{{ route('admin.cigaratte.userToken') }}" class="btn btn-primary btn-sm">
+        Issue Token
     </a>
 @endsection
 
 @section('content')
     <div class="row my-4 ">
         <div class="col-md-4">
-            <input type="date" class="form-control" onchange="showSelectedDateData(this.value)" name="date" id="date">
+            <input type="date" class="form-control"  name="date" id="date">
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-primary" onclick="loadData();">Load Data</button>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive" style="display: none" id="main_table">
         <table id="cigaratteTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -23,12 +26,7 @@
                 </tr>
             </thead>
             <tbody id="cigaratteTableBody">
-                @foreach ($cigarattes as $item)
-                    <tr data-date="{{ $item->date }}">
-                        <td>{{ $item->user_id }}</td>
-                        <td>{{ $item->token }}</td>
-                    </tr>
-                @endforeach
+
             </tbody>
         </table>
     </div>
@@ -44,16 +42,5 @@
                 ordering: true
             });
         });
-
-        function showSelectedDateData(selected_date) {
-            if (!selected_date) return;
-            $('#cigaratteTableBody tr').show();
-            $('#cigaratteTableBody tr').each(function() {
-                const rowDate = $(this).data('date');
-                if (rowDate !== selected_date) {
-                    $(this).hide();
-                }
-            });
-        }
     </script>
 @endsection
