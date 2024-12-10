@@ -54,23 +54,17 @@ class CigaratteController extends Controller
             return view('admin.cigaratte.add');
         } else {
             if (!DB::table('users')->where('id', $request->user_id)->exists()) {
-                return response()->json(['success' => false, 'message' => "User Doesn't Exist"], 400);
+                return response()->json(['success' => false, 'message' => "User Doesn't Exist"]);
             }
             $game = Helper::getCurrentGame();
             if (DB::table('cigarattes')->where('cigaratte_collection_id', $game->id)->where('user_id', $request->user_id)->exists()) {
-                return response()->json(['success' => false, 'message' => 'User already has a Token'], 400);
+                return response()->json(['success' => false, 'message' => 'User already has a Token']);
             } else {
                 $cigaratte = new Cigaratte();
                 $cigaratte->user_id = $request->user_id;
                 $cigaratte->cigaratte_collection_id = $game->id;
                 $cigaratte->token = $this->getRandToken($game->id);
                 $cigaratte->save();
-
-                $cigaratte_collection = CigaratteCollection::where('id',$game->id)->first(['win_token']);
-                if($cigaratte->token == $cigaratte_collection->win_token){
-                    $cigaratte_collection->winner_user_id = $cigaratte->id;
-                    $cigaratte_collection->save();
-                }
                 Cache::forget('cigarattes');
                 Cache::forget('cigarattes_' . $cigaratte->user_id);
                 return response()->json(['success' => true, 'message' => 'Token generated successfully']);
@@ -81,21 +75,31 @@ class CigaratteController extends Controller
 
     public function Cindex()
     {
+        // $game = Helper::getCurrentGame();
         $CigaratteCollections = DB::table('cigaratte_collections')->get(['id', 'date', 'win_token','is_published']);
         return view('admin.game.index', compact('CigaratteCollections'));
     }
     public function generatetoken()
     {
         $game = Helper::getCurrentGame();
+        $cigarattes = DB::table('cigarattes')->get(['user_id', 'token']);
         $token = $this->getRandToken($game->id);
         if ($game->win_token == null) {
             DB::table('cigaratte_collections')
                 ->where('id', $game->id)
                 ->update(['win_token' => $token]);
+            foreach ($cigarattes as $cigaratte) {
+                if ($cigaratte->token === $token) {
+                    DB::table('cigaratte_collections')
+                        ->where('id', $game->id)
+                        ->update(['winner_user_id' => $cigaratte->user_id]);
+                    break;
+                }
+            }
             Helper::clearCurrentGame($game->date);
             return redirect()->back()->with('success', 'Token generated successfully.');
         } else {
-            return redirect()->back()->with('error', 'Token   already Generated.');
+            return redirect()->back()->with('error', 'Token already generated.');
         }
     }
 
@@ -105,9 +109,17 @@ class CigaratteController extends Controller
         if ($request->getMethod() == "GET") {
             return view('admin.game.edit', compact('winner'));
         } else {
+         $cigarattes = DB::table('cigarattes')->get(['user_id', 'token']);
             $winner->win_token = $request->win_token;
             $winner->save();
-
+            foreach ($cigarattes as $cigaratte) {
+                if ($cigaratte->token === $winner->win_token) {
+                    DB::table('cigaratte_collections')
+                        ->where('id', $winner->id)
+                        ->update(['winner_user_id' => $cigaratte->user_id]);
+                    break;
+                }
+            }
             Helper::delCache();
             return redirect()->back();
         }
