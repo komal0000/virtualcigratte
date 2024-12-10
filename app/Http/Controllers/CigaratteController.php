@@ -33,7 +33,7 @@ class CigaratteController extends Controller
             $userList = DB::table('cigarattes')
                 ->join('cigaratte_collections', 'cigarattes.cigaratte_collection_id', '=', 'cigaratte_collections.id')
                 ->where('cigaratte_collections.date', $date)
-                ->get(["token","user_id"]);
+                ->get(["token", "user_id"]);
             if ($userList->isNotEmpty()) {
                 return response()->json([
                     'success' => true,
@@ -76,7 +76,7 @@ class CigaratteController extends Controller
     public function Cindex()
     {
         // $game = Helper::getCurrentGame();
-        $CigaratteCollections = DB::table('cigaratte_collections')->get(['id', 'date', 'win_token','is_published']);
+        $CigaratteCollections = DB::table('cigaratte_collections')->get(['id', 'date', 'win_token', 'is_published']);
         return view('admin.game.index', compact('CigaratteCollections'));
     }
     public function generatetoken()
@@ -109,7 +109,7 @@ class CigaratteController extends Controller
         if ($request->getMethod() == "GET") {
             return view('admin.game.edit', compact('winner'));
         } else {
-         $cigarattes = DB::table('cigarattes')->get(['user_id', 'token']);
+            $cigarattes = DB::table('cigarattes')->get(['user_id', 'token']);
             $winner->win_token = $request->win_token;
             $winner->save();
             foreach ($cigarattes as $cigaratte) {
@@ -145,6 +145,7 @@ class CigaratteController extends Controller
         $cigaratte_collection = CigaratteCollection::where('id', $id)->first();
         $cigaratte_collection->is_published = true;
         $cigaratte_collection->save();
+        Helper::delCache();
         return redirect()->back();
     }
 }

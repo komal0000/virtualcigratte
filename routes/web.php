@@ -5,8 +5,6 @@ use App\Http\Controllers\CigaratteController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\QrController;
-use App\Http\Controllers\QrControlller;
-use App\Http\Middleware\AdminLogin;
 use App\Http\Middleware\AutoLogin;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +13,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('count', [FrontController::class, 'count'])->name('count');
     Route::get('info', [FrontController::class, 'info'])->name('info');
     Route::get('win_token', [FrontController::class, 'win_token'])->name('win_token');
+    Route::get('random_code', [FrontController::class, 'random_code'])->name('random_code');
+    Route::post('getOTP', [FrontController::class, 'getOTP'])->name('getOTP');
 });
 
 Route::match(['GET', 'POST'], '/login', [LoginController::class, 'login'])->name('login');

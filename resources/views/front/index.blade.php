@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive Cigarette Interface</title>
     <link rel="stylesheet" href="{{ asset('asset/front/index.css') }}">
+    <style>
+        h5 {
+            color: black;
+
+        }
+
+        h5 span {
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
@@ -25,11 +35,11 @@
             <div class="info">
                 <div class="head" style="display:flex;justify-content: space-between;margin-bottom: 10px">
                     <h2>Winning Token</h2>
-                    <button class="btn btn-primary" onclick="winnerToken()">
+                    <button class="btn btn-primary" onclick="winnerToken();">
                         Show
                     </button>
                 </div>
-                <span id="winning_token"></span>
+                <div id="winning_token"></div>
             </div>
             <button class="btn" id="buy-btn" style="width: 100%; margin-top: 10px;" onclick="showbuypopup()">Buy
                 Cigarette</button>
@@ -86,7 +96,7 @@
         }
 
         function winnerToken() {
-            fetch("{{ route('win_token') }}", {
+            fetch(`{{ route('win_token') }}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
@@ -94,7 +104,7 @@
                 })
                 .then(response => response.text())
                 .then(data => {
-                        winningTokenElement.textContent = data;
+                    winningTokenElement.innerHTML = data;
                 })
                 .catch(error => {
                     console.error("Error fetching winning token:", error);
@@ -118,6 +128,48 @@
                     console.error("Error fetching cigarette count:", error);
                     alert("Error fetching cigarette count.");
                 });
+        }
+
+        function generateCode() {
+            const code = getRandomCode();
+
+            fetch("{{ route('getOTP') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        randomCode: code
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('cashoutBtn').style.display = 'none';
+                    const otpElement = document.getElementById('otpElement');
+                    if (otpElement) {
+                        otpElement.textContent = "This is Your OTP: " + data.otp;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching OTP:", error);
+                    alert("Error fetching OTP.");
+                });
+        }
+
+        function getRandomCode() {
+            const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const codeLength = 8;
+            let randomCode = '';
+            for (let i = 0; i < codeLength; i++) {
+                randomCode += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return randomCode;
         }
     </script>
 </body>

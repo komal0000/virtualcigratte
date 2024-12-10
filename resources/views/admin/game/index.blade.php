@@ -31,8 +31,8 @@
                         <td>{{ $item->date }}</td>
                         <td>{{ $item->win_token }}</td>
                         <td>
-                            <a href="{{ route('admin.cigaratteCollection.generatetoken') }}" class="btn btn-danger">Generate Token</a>
                             @if($item->win_token==null)
+                            <a href="{{ route('admin.cigaratteCollection.generatetoken') }}" class="btn btn-danger">Generate Token</a>
                             @endif
                             @if($item->is_published==0)
                                 <a href="{{ route('admin.cigaratteCollection.publish', ['id' => $item->id]) }}" class="btn btn-primary">Publish</a>
