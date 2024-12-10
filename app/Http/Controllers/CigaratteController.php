@@ -33,9 +33,7 @@ class CigaratteController extends Controller
             $userList = DB::table('cigarattes')
                 ->join('cigaratte_collections', 'cigarattes.cigaratte_collection_id', '=', 'cigaratte_collections.id')
                 ->where('cigaratte_collections.date', $date)
-                ->get();
-
-            dd($userList);
+                ->get(["token","user_id"]);
             if ($userList->isNotEmpty()) {
                 return response()->json([
                     'success' => true,
@@ -67,6 +65,12 @@ class CigaratteController extends Controller
                 $cigaratte->cigaratte_collection_id = $game->id;
                 $cigaratte->token = $this->getRandToken($game->id);
                 $cigaratte->save();
+
+                $cigaratte_collection = CigaratteCollection::where('id',$game->id)->first(['win_token']);
+                if($cigaratte->token == $cigaratte_collection->win_token){
+                    $cigaratte_collection->winner_user_id = $cigaratte->id;
+                    $cigaratte_collection->save();
+                }
                 Cache::forget('cigarattes');
                 Cache::forget('cigarattes_' . $cigaratte->user_id);
                 return response()->json(['success' => true, 'message' => 'Token generated successfully']);

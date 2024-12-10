@@ -30,9 +30,9 @@
             </tbody>
         </table>
     </div>
-@endsection
+    @endsection
 
-@section('js')
+    @section('js')
     <script type="text/javascript">
         function loadData() {
             const date = $('#date').val();
@@ -40,13 +40,16 @@
                 alert('Please select a date');
                 return;
             }
+            $('#cigaratteTable').DataTable().clear().destroy();
+            let tableBody = $('#cigaratteTableBody');
+            tableBody.empty();
             fetch("{{ route('admin.cigaratte.index') }}", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                         "X-CSRF-TOKEN": "{{ csrf_token() }}"
                     },
-                    body:({
+                    body: JSON.stringify({
                         date: date
                     })
                 })
@@ -54,27 +57,24 @@
                 .then(data => {
                     if (data.success) {
                         $('#main_table').show();
-                        let tableBody = $('#cigaratteTableBody');
-                        tableBody.empty();
 
                         data.users.forEach(user => {
                             tableBody.append(`
-                    <tr>
-                        <td>${user.name}</td>
-                        <td>${user.token}</td>
-                    </tr>
-                `);
-                        });
-                        $('#cigaratteTable').DataTable().clear().destroy();
-                        $('#cigaratteTable').DataTable({
-                            responsive: true,
-                            paging: true,
-                            searching: true,
-                            ordering: true
+                                <tr>
+                                    <td>${user.user_id}</td>
+                                    <td>${user.token}</td>
+                                </tr>
+                            `);
                         });
                     } else {
-                        alert('Failed to load data');
+                        alert('');
                     }
+                    $('#cigaratteTable').DataTable({
+                        responsive: true,
+                        paging: true,
+                        searching: true,
+                        ordering: true
+                    });
                 })
                 .catch(error => {
                     console.error('Error:', error);
