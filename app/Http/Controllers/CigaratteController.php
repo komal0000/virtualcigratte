@@ -127,7 +127,7 @@ class CigaratteController extends Controller
     public function publish($id)
     {
         $cigaratte_collection = CigaratteCollection::where('id', $id)->first();
-        $cigaratte_collection->published_at = true;
+        $cigaratte_collection->is_published = true;
         $cigaratte_collection->save();
         return redirect()->back();
     }
