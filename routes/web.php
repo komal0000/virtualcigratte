@@ -21,7 +21,7 @@ Route::match(['GET', 'POST'], '/login', [LoginController::class, 'login'])->name
 Route::prefix('admin')->name('admin.')->middleware('auth')->middleware('adminlogin')->group(function () {
     Route::get('', [AdminController::class, 'index'])->name('index');
     Route::prefix('cigaratte')->name('cigaratte.')->group(function () {
-        Route::get('', [CigaratteController::class, 'index'])->name('index');
+        Route::match(['GET', 'POST'], '', [CigaratteController::class, 'index'])->name('index');
         Route::match(['GET', 'POST'], '/userToken', [CigaratteController::class, 'userToken'])->name('userToken');
         Route::match(['GET', 'POST'], '/edit/{id}', [CigaratteController::class, 'edit'])->name('edit');
         Route::match(['GET', 'POST'], '/del/{id}', [CigaratteController::class, 'del'])->name('del');
@@ -30,7 +30,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->middleware('adminlog
         Route::get('', [CigaratteController::class, 'Cindex'])->name('index');
         Route::match(['GET', 'POST'], '/generatetoken', [CigaratteController::class, 'generatetoken'])->name('generatetoken');
         Route::match(['GET', 'POST'], '/edit/{id}', [CigaratteController::class, 'Cedit'])->name('edit');
-        Route::match(['GET','POST'], '/publish/{id}', [CigaratteController::class, 'publish'])->name('publish');
+        Route::match(['GET', 'POST'], '/publish/{id}', [CigaratteController::class, 'publish'])->name('publish');
         Route::match(['GET'], 'winner/{win_id}', [CigaratteController::class, 'winner'])->name('winner');
     });
     Route::prefix('qrimage')->name('qrimage.')->group(function () {

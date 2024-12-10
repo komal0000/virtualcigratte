@@ -11,7 +11,7 @@
 @section('content')
     <div class="row my-4 ">
         <div class="col-md-4">
-            <input type="date" class="form-control"  name="date" id="date">
+            <input type="date" class="form-control" name="date" id="date">
         </div>
         <div class="col-md-4">
             <button class="btn btn-primary" onclick="loadData();">Load Data</button>
@@ -34,13 +34,52 @@
 
 @section('js')
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('#cigaratteTable').DataTable({
-                responsive: true,
-                paging: true,
-                searching: true,
-                ordering: true
-            });
-        });
+        function loadData() {
+            const date = $('#date').val();
+            if (!date) {
+                alert('Please select a date');
+                return;
+            }
+            fetch("{{ route('admin.cigaratte.index') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body:({
+                        date: date
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        $('#main_table').show();
+                        let tableBody = $('#cigaratteTableBody');
+                        tableBody.empty();
+
+                        data.users.forEach(user => {
+                            tableBody.append(`
+                    <tr>
+                        <td>${user.name}</td>
+                        <td>${user.token}</td>
+                    </tr>
+                `);
+                        });
+                        $('#cigaratteTable').DataTable().clear().destroy();
+                        $('#cigaratteTable').DataTable({
+                            responsive: true,
+                            paging: true,
+                            searching: true,
+                            ordering: true
+                        });
+                    } else {
+                        alert('Failed to load data');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while loading data');
+                });
+        }
     </script>
 @endsection

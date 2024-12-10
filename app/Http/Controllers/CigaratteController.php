@@ -26,15 +26,30 @@ class CigaratteController extends Controller
     }
     public function index(Request $request)
     {
-        if($request->getMethod()=="get"){
-
+        if ($request->getMethod() == "GET") {
             return view('admin.cigaratte.index');
-        }else{
-            // $helper=DB::table("??COLLECTION
-            // CIGGRATE RETURN LIST
-            // return response()->json()
+        } else {
+            $date = $request->date;
+            $userList = DB::table('cigarattes')
+                ->join('cigaratte_collections', 'cigarattes.cigaratte_collection_id', '=', 'cigaratte_collections.id')
+                ->where('cigaratte_collections.date', $date)
+                ->get();
+
+            dd($userList);
+            if ($userList->isNotEmpty()) {
+                return response()->json([
+                    'success' => true,
+                    'users' => $userList
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No data found for the selected date.'
+                ]);
+            }
         }
     }
+
     public function userToken(Request $request)
     {
         if ($request->getMethod() == "GET") {
@@ -43,7 +58,6 @@ class CigaratteController extends Controller
             if (!DB::table('users')->where('id', $request->user_id)->exists()) {
                 return response()->json(['success' => false, 'message' => "User Doesn't Exist"], 400);
             }
-
             $game = Helper::getCurrentGame();
             if (DB::table('cigarattes')->where('cigaratte_collection_id', $game->id)->where('user_id', $request->user_id)->exists()) {
                 return response()->json(['success' => false, 'message' => 'User already has a Token'], 400);
@@ -70,7 +84,6 @@ class CigaratteController extends Controller
     {
         $game = Helper::getCurrentGame();
         $token = $this->getRandToken($game->id);
-        // dd($game);
         if ($game->win_token == null) {
             DB::table('cigaratte_collections')
                 ->where('id', $game->id)
