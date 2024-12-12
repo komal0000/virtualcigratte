@@ -153,7 +153,7 @@
                     document.getElementById('cashoutBtn').style.display = 'none';
                     const otpElement = document.getElementById('otpElement');
                     if (otpElement) {
-                        otpElement.textContent = "This is Your OTP: " + data.otp;
+                        otpElement.textContent = "This is Your OTP: " + data;
                     }
                 })
                 .catch(error => {

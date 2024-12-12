@@ -60,6 +60,7 @@ class FrontController extends Controller
                             <span>You Are Winner</span>
                             <div>
                             <button onclick='generateCode();' id='cashoutBtn' style='margin:10px 0px;' class='btn btn-primary btn-sm'>Initiate Cashout</button></div>
+                            <hr style='margin:8px 0px'>
                             <span id='otpElement'><span>
                             " : "") .
                     "</h5>"
